@@ -3,6 +3,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { Popover } from '@headlessui/react';
 import { FeedbackContentStep, FeedbackContentStepProps } from './FeedbackContentStep';
 import { feedbackTypes } from '..';
+import { http, HttpResponse } from 'msw'
 
 
 export default {
@@ -11,6 +12,18 @@ export default {
   args: {
     feedbackType: 'IDEA'
   },
+  parameters: {
+    msw: {
+      handlers: [
+        http.post('/feedbacks', () => {
+          return HttpResponse.json({
+            success: true,
+          })
+        })
+      ]
+    }
+  }
+  ,
   argTypes: { // como meus argumentos irão ser modificados ou não la no storybook
     feedbackType: {
       options: Object.keys(feedbackTypes),
